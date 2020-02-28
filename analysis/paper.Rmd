@@ -1,0 +1,316 @@
+---
+title: "Replication in Archaeological Science: Shape as a Measure of Weapon Standardisation"
+author: "Team Fresh"
+date: "2/24/2020"
+output: word_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  echo = FALSE,
+  warning = FALSE,
+  message = FALSE
+)
+```
+
+## Introduction
+
+The traditional approach to evaluating the level of manufacturing standardization in a society has involved the comparison of standard dimensional measurements of the object through the coefficient of variation (CV) metric [1]. Computed as a simple ratio of the standard deviation to the mean, and scaled by 100 as shown below, the coefficient of variation provides an easily interpretable measure of variation that can be compared to other measurements with different mean values.
+
+$$ CV = \frac{stdev}{mean}*100 $$
+
+However, in the paper _Shape as a measure of weapon standardization: From metric to geometric morphometric analysis of the Iron Age ‘Havor’ lance from Southern Scandinavia_ by Birch and Martinon-Torres, a new approach is proposed. Instead of relying on dimensional comparison of different CVs, they propose using a Geomorphic Morphometric (GMM) analysis as a general measure of overall shape [2].
+
+In this work, we are attempting to confirm that the underlying data provided is the same as that used in the original study by replicating the figure showing the pair-wise correlation of all lance dimensions across the three underlying datasets (original study Fig 8). We are also attempting to replicate the original finding that there was found to be an association between overall centroid size and shape that could not be explained through site difference via an ANOVA analysis.
+
+## Methods
+
+The original analysis was conducted in an unspecified version of R. However, specific versions of geomorph(v3.0.6) and shapes(v1.2.3), two of the most important packages, were directly stated. Our reproduction attempt began with importing the packages explicitly identified in the paper as well as those required in the technical code.
+
+
+```{r load packages, include=TRUE}
+#adding this line as a git test
+#install specific versions of packages called out in the paper
+#require(devtools)
+library(devtools)
+#install_version("geomorph", version = "3.0.6", repos = "http://cran.rstudio.com")
+#install_version("geomorph", version = "3.0.6", repos = "http://cran.r-project.org")
+#install.packages("http://https://cran.r-project.org/src/contrib/Archive/geomorph/geomorph_3.0.6.tar.gz", repos=NULL, type="source")
+library(geomorph) # geomorph 3.0.6
+
+#install_version("shapes", version = "1.2.3", repos = "http://cran.rstudio.com/") #"http://cran.rstudio.com")
+#install_version("shapes", version = "1.2.3", repos = "http://cran.rstudio.com/") #"http://cran.us.r-project.org")
+library(shapes) # shapes 1.2.3
+
+#not mentioned in the technical appendix, but required in technical code
+library(shapes)
+
+#package for lattice replication
+library(GGally)
+
+#package to support updating geomorph code for those that cannot use old package
+#library(RRPP)
+
+
+#Running on OSX instead of Windows advice:
+# 1. Install XCode (this enables devtools)
+# 2. Install XQuartz https://www.xquartz.org/
+# 3. Install gfortran https://gcc.gnu.org/wiki/GFortranBinariesMacOS
+
+```
+
+Our next step was to set the working directory. Although a trivial step, the original code used setwd() and a static path string while our reproduction attempt opted to use the more robust here() library as shown below.
+
+```{r set working directory, include=TRUE}
+#setwd(dirname(rstudioapi::getSourceEditorContext()$path))
+#getwd()
+library(here)
+```
+
+Next, we read in and shaped the data obtained from the ScieceDirect archive of the paper using the same code as the original paper, slightly modified to account for our modified approach to setting the working directory. 
+
+
+```{r load data, include=TRUE}
+# Read the appendix datafile containing a matrix of dimensional data (metric) as "lances_M" 
+lances_M<-read.csv(here("Data","1-s2.0-S0305440318306757-mmc2.csv"),header=TRUE)
+
+# Read the datafile "lances_GMM" containing a matrix of landmark data (geometric morphometric)
+#lances_GMM<-read.csv("Data/1-s2.0-S0305440318306757-mmc3.csv",header=TRUE)
+lances_GMM<-read.csv(here("Data","1-s2.0-S0305440318306757-mmc3.csv"),header=TRUE)
+
+# Convert the 2D matrix of geometric morphometric data ("lances_GMM") into a 3D array
+lances_geo<-arrayspecs(lances_GMM[,2:15],7,2) # 7 landmarks, recording 2 dimensions only (xy coordinates), ignoring the first column of lance IDs
+
+```
+
+
+```{r analysis 1, include=TRUE}
+
+# CODE PROVIDED BY AUTHORS IN TECHNICAL APPENDIX 
+
+# Before undertaking any descriptive statistics of the metric dimensions of the lances, it is important to re-sort the data matrix and subset the data.
+lances_M$site<-factor(lances_M$site,
+                    levels = c("Ejsbol","Nydam", "Illerup"),
+                    labels = c("Ejsbol","Nydam", "Illerup"),
+                    ordered=T)                                # This simply converts the variable 'site' into an ordered variable of factors with levels.
+
+# The data can be subset into specific features of the lance, so that only cases with complete data are used
+blade<-subset(lances_M, point=='yes')                                 # Selects all cases with complete blades
+socket<-subset(lances_M, socket=='yes')                               # Selects all cases with complete sockets
+total<-subset(lances_M, point=='yes' & socket=='yes')                 # Selects all 'complete' lances with all features
+
+# Pairwise correlations of lance features
+cor(socket$socket_length,socket$sock_bdiam,use="pairwise.complete.obs") # 0.52
+cor(socket$sock_bdiam,socket$sock_sdiam,use="pairwise.complete.obs")    # 0.52
+cor(lances_M$width,lances_M$thickness,use="pairwise.complete.obs")      # 0.53
+cor(blade$blade_length,blade$width,use="pairwise.complete.obs")         # 0.58
+cor(blade$blade_length,blade$thickness,use="pairwise.complete.obs")     # 0.47
+
+# GPA is performed on the lances, including the semi-landmarks at the socket.
+lancespr<-gpagen(lances_geo, print.progress = FALSE)  # GPA of all lances
+
+# Manually create a vector containing site
+site<-as.factor(c(rep("Ejsbøl",6),rep("Nydam",24),rep("Illerup",48)))
+site<-factor(site,levels=c("Ejsbøl","Nydam","Illerup")) # Create a vector for the different sites
+
+# Create a geomorph data frame for analysis
+lances_geomorph<-geomorph.data.frame(shape=lancespr$coords,site=site,size=lancespr$Csize,ind=lances_GMM$site_lance.id) # Parse the data into a geomorph data frame
+```
+
+
+With the R session properly configured, correct packages installed, and data loaded and shaped according to the paper and provided R file, we were then able to proceed with our attempt at replicating the correlation matrix of lance dimensions shown in Figure 8 of the original paper. This is where we encountered our first issue, as the code used to create the figure was not included in the R file. Instead a series of five corr() statements (shown below) comparing a subset of lance features were included with the resulting correlation coefficients included in the comments.
+
+Pairwise correlations of lance features
+cor(socket$socket_length,socket$sock_bdiam,use="pairwise.complete.obs") # 0.52
+cor(socket$sock_bdiam,socket$sock_sdiam,use="pairwise.complete.obs")    # 0.52
+cor(lances_M$width,lances_M$thickness,use="pairwise.complete.obs")      # 0.53
+cor(blade$blade_length,blade$width,use="pairwise.complete.obs")         # 0.58
+cor(blade$blade_length,blade$thickness,use="pairwise.complete.obs")     # 0.47
+
+We then attempted to replicate the figure with the ggpairs() library and perform a visual comparison to Figure 8.
+
+Finally, we attempted to replicate the original finding that there was found to be an association between overall centroid size and shape that could not be explained through site difference via an ANOVA analysis. This test was described on page 44 of the original paper as well as in the R document and relies on the procD.allometry() function from the geomorph package.
+
+## Results
+
+Unfortunately, the pairwise correlation coefficients noted in the comments were not the same as the ones shown in Figure 8. This inconsistiency made it more difficult to confirm the success of our replication attempt. 
+
+Luckily, we were able to replicate the finding that there was found to be an association between overall centroid size and shape that could not be explained through site difference via an ANOVA analysis on page 44 of the original paper
+
+### Reproducing Figure 8 and associated analysis
+
+The figure that we are attepting to replicate is Figure 8, captioned as a  "Correlation matrix of Havor lance dimensions showing Pearson's r(lowerpanel), accompanying bivariate plots (upperpanel) and  distributions (histograms with kernel density estimation, on the diagonal). Red=Ejsbøl, green=Nydam, blue=Illerup."
+
+Data appear to be drawn from the main lances_M dataframe, but the figure labels include "socket (max)" and "socket (min)" which do not haave obvious analogues in the column names.
+
+A closer review of the paper leads us to the following line: "Although socket 'diameters' were measured, they are referred to here as minimum and maximum socket 'thickness' (p.38." This points us to two fields, which we can test against the summary table that is Table 1:
+
+```{r replication target preparation, include=TRUE, echo=FALSE}
+
+lances_M %>%
+  dplyr::group_by(site) %>%
+  dplyr::summarise(mean=mean(sock_sdiam, na.rm = TRUE), n = sum(!is.na(sock_sdiam)))
+
+lances_M %>%
+  dplyr::group_by(site) %>%
+  dplyr::summarise(mean=mean(sock_bdiam, na.rm = TRUE), n = sum(!is.na(sock_bdiam)))
+
+blade %>%
+  dplyr::group_by(site) %>%
+  dplyr::summarise(mean=mean(blade_length, na.rm = TRUE), n = sum(!is.na(blade_length)))
+```
+
+We can be confident therefore that "sock_bdiam" and "sock_sdiam" are the sources of "socket (max) [thickness (mm)]" and "socket (min) [thickness (mm)]" respectively. Using some custom functions and the excellent ggally package, we can produce a first replication of the figure.
+
+
+```{r replication figure, include=TRUE, echo=FALSE}
+
+#notes for those who follow:
+# check variable names - dont think sock_bdiam etc. is the same as min max width
+# color match
+# label match
+
+
+#upper_fn <- function(data, mapping, ...){
+#  p <- ggplot(data = data, mapping = mapping) + 
+#    geom_smooth(method=loess, fill="None", color="Black", ...) +
+#    geom_point(aes(color=site, alpha=0.5))
+#  p
+#}
+
+#REMOVED fill="None"
+upper_fn <- function(data, mapping, ...){
+  p <- ggplot(data = data, mapping = mapping) + 
+    geom_smooth(method=loess, color="Black", ...) +
+    geom_point(aes(color=site, alpha=0.5))
+  p
+}
+
+diag_fn <- function(data, mapping, ...){
+  p <- ggplot(data = data, mapping = mapping) + 
+    geom_histogram(bins=10, color="black", fill="cyan", aes(y = ..ncount..)) + 
+    geom_density(color="red",aes(y = ..scaled..,color="red"))
+  p
+}
+
+pairs_fig <- ggpairs(lances_M, columns = c("total_length", "blade_length", "socket_length", "sock_bdiam", "sock_sdiam", "width", "thickness"), 
+        upper=list(continuous = upper_fn),
+        diag=list(continuous = diag_fn),
+        lower=list(continuous = "cor")) + theme_minimal() #+
+        #ggsave(here("Images","replication_fig_8v1.png"))
+print(pairs_fig, progress = F) 
+
+#Copied to try to adjust to get to knit in Thomas's env
+#pairs_fig <- ggpairs(lances_M, columns = c('total_length', 'blade_length', 'socket_length', 'sock_bdiam', #'sock_sdiam', 'width', 'thickness'),  
+#        upper=list(continuous = upper_fn),
+#        diag=list(continuous = diag_fn),
+#        lower=list(continuous = "cor")) + theme_minimal() #+
+#        #ggsave(here("Images","replication_fig_8v1.png"))
+#print(pairs_fig, progress = F) 
+
+```
+
+The correlation values to do not match the paper. A quick test with the stats passage verifies the results of our plot and confirms that the issue is not a mis-labelling of a spearman coefficient.
+
+```{r replication corr test, include=TRUE, echo=FALSE}
+cor(lances_M$socket_length,lances_M$sock_bdiam, use= "pairwise.complete.obs", method = "pearson")
+cor(lances_M$socket_length,lances_M$sock_bdiam, use= "pairwise.complete.obs", method = "spearman")
+
+cor(lances_M$sock_sdiam,lances_M$width, use= "pairwise.complete.obs", method = "pearson")
+cor(lances_M$sock_sdiam,lances_M$width, use= "pairwise.complete.obs", method = "spearman")
+```
+Try recreating figure on different data subsets:
+
+```{r replication corr test 2, include=TRUE, echo=FALSE}
+#COMMENTED OUT BY THOMAS IN ORDER TO KNIT
+
+pairs_fig <- ggpairs(lances_M[complete.cases(lances_M),], columns = c("total_length", "blade_length", "socket_length", "sock_bdiam", "sock_sdiam", "width", "thickness"), 
+        upper=list(continuous = upper_fn),
+        diag=list(continuous = diag_fn),
+        lower=list(continuous = "cor")) + theme_minimal() #+
+#        ggsave(here("Images","replication_fig_8_complete_cases_manual.png"))
+print(pairs_fig, progress = F) 
+
+#COMMENTED OUT BY THOMAS IN ORDER TO KNIT
+pairs_fig <- ggpairs(blade, columns = c("total_length", "blade_length", "socket_length", "sock_bdiam", "sock_sdiam", "width", "thickness"), 
+        upper=list(continuous = upper_fn),
+        diag=list(continuous = diag_fn),
+        lower=list(continuous = "cor")) + theme_minimal() #+
+#        ggsave(here("Images","replication_fig_8_blade.png"))
+print(pairs_fig, progress = F) 
+
+#COMMENTED OUT BY THOMAS IN ORDER TO KNIT
+pairs_fig <- ggpairs(socket, columns = c("total_length", "blade_length", "socket_length", "sock_bdiam", "sock_sdiam", "width", "thickness"), 
+        upper=list(continuous = upper_fn),
+        diag=list(continuous = diag_fn),
+        lower=list(continuous = "cor")) + theme_minimal() #+
+#        ggsave(here("Images","replication_fig_8_socket.png"))
+print(pairs_fig, progress = F) 
+
+#COMMENTED OUT BY THOMAS IN ORDER TO KNIT
+pairs_fig <- ggpairs(total, columns = c("total_length", "blade_length", "socket_length", "sock_bdiam", "sock_sdiam", "width", "thickness"), 
+        upper=list(continuous = upper_fn),
+        diag=list(continuous = diag_fn),
+        lower=list(continuous = "cor")) + theme_minimal() #+
+#        ggsave(here("Images","replication_fig_8_blades_and_sockets.png"))
+print(pairs_fig, progress = F) 
+
+```
+
+None of the author-defined data subsets (or a manual calculation based on on complete cases)allows us to replicate the correaltion results.
+
+### Reproducing ANOVA analysis
+
+As of geomorph version 3.1, the function procD.allmoetry has been deprecated (see https://rdrr.io/cran/geomorph/man/procD.allometry.html). This function underpinned the ANOVA tests provided in the technical code appendix. Thankfully, the specificity of the authors' instructions allow a previous version of geomorph to be installed!
+
+We replicate the results of p.44 on the ANOVA tests used to establish whether there is a significant relationship between centroid size and shape.
+
+```{r replication ANOVA  test, include=TRUE, echo=FALSE}
+lances_ANOVA_site<-procD.allometry(shape ~ size, ~site, print.progress = FALSE,  data=lances_geomorph,method="PredLine") 
+
+print(lances_ANOVA_site)
+
+```
+
+The results match. We note that no seed is specified in the provided code, making the random resampling approach used volatile.
+
+We can explore the effect of other parameters in the allometry ANOVA, to test whether the core conclusion holds. In the example below, we do not log-transform the size variable and we set a signficance threshold (alpha) of 0.1, rather than the default 0.05.
+
+```{r explore ANOVA  test v1, include=TRUE, echo=FALSE}
+lances_ANOVA_two<-procD.allometry(shape ~ size, ~site, logsz=FALSE, seed=42, alpha=0.1, print.progress = FALSE,  data=lances_geomorph, method="PredLine") 
+
+print(lances_ANOVA_two)
+
+```
+
+The core result holds! We can push these boundaries futher; removing residual randomnizatio and using Cohen’s f-squared values as the random distribution to
+estimate effect size.
+
+```{r explore ANOVA  test v2, include=TRUE, echo=FALSE}
+lances_ANOVA_three <- procD.allometry(shape ~ size, ~site, logsz=FALSE, seed=42, alpha=0.1, effect.type="cohen", RRPP=FALSE,  print.progress = FALSE, data=lances_geomorph, method="PredLine") 
+
+print(lances_ANOVA_three)
+
+```
+
+The core result still holds.
+
+## Conclusion
+
+Our attempt at a replication of two parts of the paper _Shape as a measure of weapon standardization: From metric to geometric morphometric analysis of the Iron Age ‘Havor’ lance from Southern Scandinavia_ by Birch and Martinon-Torres was an overall success despite some missing documentation and inconsistencies between the paper and provided code.
+
+Specifically, the replication attempt of the figure showing the pair-wise correlation of all lance dimensions across the three underlying datasets (original study Fig 8) was used to confirm that the underlying data provided by the authors was the same as that used in the analysis. This replication attempt was complicated by the lack of the code used to generate the plot in the provided R file. Additionally, the correlation coefficients noted in the R file comments did not match the figure in the original paper. We were able to create a similar figure to the one in the original paper; but without a clear expected outcome, we were unable to confirm that the provided dataset was the same one used in the analysis.
+
+The second part of the original paper we attempted to replicate was the original finding that there was found to be an association between overall centroid size and shape that could not be explained through site difference via an ANOVA analysis. The code used to perform this analysis was included in the R file, and the expected results noted in the comments matched the original paper. This made it much easier to evaluate the accuracy of our replication. We ran the same analysis as noted in the provided R code and obtained the same results.
+
+The combination of these two replication efforts combined to make this a successful replication attempt. Although our initial attempt cast doubt on the underlying data, the fact that the second replication matched the expected result suggests that the problem with the first attempt was a transcription error between code and paper and not an indication of bad underlying data.
+
+## References
+
+
+1. Li, X.J., Bevan, A.H., Martinón-Torres, M., Rehren, T., Cao, W., Xia, Y., Zhao, K., 2014.
+Crossbows and imperial craft organisation: the bronze triggers of China's Terracotta
+Army. Antiquity 88, 126–140.
+
+2. Birch, T., & Martinon-Torres, M. (2018). Shape as a measure of weapon standardisation: From metric to geometric morphometric analysis of the Iron Age ‘Havor’ lance from Southern Scandinavia. Journal of Archaeological Science, 101, 34-51. doi: https://doi.org/10.1016/j.jas.2018.11.002
