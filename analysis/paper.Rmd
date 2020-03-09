@@ -68,7 +68,7 @@ Our next step was to set the working directory. Although a trivial step, the ori
 library(here)
 ```
 
-Next, we read in and shaped the data obtained from the ScieceDirect archive of the paper using the same code as the original paper, slightly modified to account for our modified approach to setting the working directory. 
+Next, we read in and shaped the data obtained from the ScienceDirect archive of the paper using the same code as the original paper, slightly modified to account for our modified approach to setting the working directory. 
 
 
 ```{r load data, include=TRUE}
@@ -142,7 +142,7 @@ Luckily, we were able to replicate the finding that there was found to be an ass
 
 The figure that we are attepting to replicate is Figure 8, captioned as a  "Correlation matrix of Havor lance dimensions showing Pearson's r(lowerpanel), accompanying bivariate plots (upperpanel) and  distributions (histograms with kernel density estimation, on the diagonal). Red=Ejsbøl, green=Nydam, blue=Illerup."
 
-Data appear to be drawn from the main lances_M dataframe, but the figure labels include "socket (max)" and "socket (min)" which do not haave obvious analogues in the column names.
+Data appear to be drawn from the main lances_M dataframe, but the figure labels include "socket (max)" and "socket (min)" which do not have obvious analogues in the column names.
 
 A closer review of the paper leads us to the following line: "Although socket 'diameters' were measured, they are referred to here as minimum and maximum socket 'thickness' (p.38." This points us to two fields, which we can test against the summary table that is Table 1:
 
@@ -211,7 +211,7 @@ print(pairs_fig, progress = F)
 
 ```
 
-The correlation values to do not match the paper. A quick test with the stats passage verifies the results of our plot and confirms that the issue is not a mis-labelling of a spearman coefficient.
+The correlation values do not exactly match that of the paper. A quick test with the stats passage verifies the results of our plot and confirms that the issue is not a mis-labelling of a spearman coefficient.
 
 ```{r replication corr test, include=TRUE, echo=FALSE}
 cor(lances_M$socket_length,lances_M$sock_bdiam, use= "pairwise.complete.obs", method = "pearson")
@@ -220,7 +220,7 @@ cor(lances_M$socket_length,lances_M$sock_bdiam, use= "pairwise.complete.obs", me
 cor(lances_M$sock_sdiam,lances_M$width, use= "pairwise.complete.obs", method = "pearson")
 cor(lances_M$sock_sdiam,lances_M$width, use= "pairwise.complete.obs", method = "spearman")
 ```
-Try recreating figure on different data subsets:
+Below we recreate the figure on different data subsets:
 
 ```{r replication corr test 2, include=TRUE, echo=FALSE}
 #COMMENTED OUT BY THOMAS IN ORDER TO KNIT
@@ -258,11 +258,11 @@ print(pairs_fig, progress = F)
 
 ```
 
-None of the author-defined data subsets (or a manual calculation based on on complete cases)allows us to replicate the correaltion results.
+None of the author-defined data subsets (or a manual calculation based on on complete cases) allows us to replicate the correlation results.
 
 ### Reproducing ANOVA analysis
 
-As of geomorph version 3.1, the function procD.allmoetry has been deprecated (see https://rdrr.io/cran/geomorph/man/procD.allometry.html). This function underpinned the ANOVA tests provided in the technical code appendix. Thankfully, the specificity of the authors' instructions allow a previous version of geomorph to be installed!
+As of geomorph version 3.1, the function procD.allmoetry has been deprecated (see https://rdrr.io/cran/geomorph/man/procD.allometry.html). This function underpinned the ANOVA tests provided in the technical code appendix. Thankfully, the specificity of the authors' instructions allowed a previous version of geomorph to be installed!
 
 We replicate the results of p.44 on the ANOVA tests used to establish whether there is a significant relationship between centroid size and shape.
 
@@ -275,7 +275,7 @@ print(lances_ANOVA_site)
 
 The results match. We note that no seed is specified in the provided code, making the random resampling approach used volatile.
 
-We can explore the effect of other parameters in the allometry ANOVA, to test whether the core conclusion holds. In the example below, we do not log-transform the size variable and we set a signficance threshold (alpha) of 0.1, rather than the default 0.05.
+We can explore the effect of other parameters in the allometry ANOVA, to test whether the core conclusion holds. In the example below, we do not log-transform the size variable and we set a significance threshold (alpha) of 0.1, rather than the default 0.05.
 
 ```{r explore ANOVA  test v1, include=TRUE, echo=FALSE}
 lances_ANOVA_two<-procD.allometry(shape ~ size, ~site, logsz=FALSE, seed=42, alpha=0.1, print.progress = FALSE,  data=lances_geomorph, method="PredLine") 
@@ -284,8 +284,7 @@ print(lances_ANOVA_two)
 
 ```
 
-The core result holds! We can push these boundaries futher; removing residual randomnizatio and using Cohen’s f-squared values as the random distribution to
-estimate effect size.
+The core result holds! We can push these boundaries further; removing residual randomization and using Cohen’s f-squared values as the random distribution to estimate effect size.
 
 ```{r explore ANOVA  test v2, include=TRUE, echo=FALSE}
 lances_ANOVA_three <- procD.allometry(shape ~ size, ~site, logsz=FALSE, seed=42, alpha=0.1, effect.type="cohen", RRPP=FALSE,  print.progress = FALSE, data=lances_geomorph, method="PredLine") 
