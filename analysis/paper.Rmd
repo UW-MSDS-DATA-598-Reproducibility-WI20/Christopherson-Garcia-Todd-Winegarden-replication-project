@@ -1,6 +1,6 @@
 ---
 title: "Replication in Archaeological Science: Shape as a Measure of Weapon Standardisation"
-author: "Team Fresh"
+author: "Corey Christopherson, Zachary Garcia, Richard Todd, Thomas Winegarden"
 date: "2/24/2020"
 output: word_document
 ---
