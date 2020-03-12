@@ -1,4 +1,8 @@
 # Shape as a Measure of Weapon Standardisation: A Replication
+
+<!-- badges: start -->
+[![R build status](https://github.com/rcctodd/-Christopherson-Garcia-Todd-Winegarden-replication-project/workflows/R-CMD-check/badge.svg)](https://github.com/rcctodd/-Christopherson-Garcia-Todd-Winegarden-replication-project/actions)
+<!-- badges: end -->
  
 ## Contributors
 

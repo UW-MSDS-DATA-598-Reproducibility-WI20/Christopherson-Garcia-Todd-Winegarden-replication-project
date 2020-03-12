@@ -30,7 +30,7 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 Suggests: 
     testthat
-Imports:,
+Imports: ,
     ape (>= 5.3),
     assertthat (>= 0.2.1),
     backports (>= 1.1.5),
@@ -117,3 +117,5 @@ Imports:,
     xtable (>= 1.8-4),
     yaml (>= 2.2.1),
     zeallot (>= 0.1.0)
+URL: https://github.com/rcctodd/-Christopherson-Garcia-Todd-Winegarden-replication-project
+BugReports: https://github.com/rcctodd/-Christopherson-Garcia-Todd-Winegarden-replication-project/issues
