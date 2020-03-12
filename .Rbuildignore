@@ -3,3 +3,4 @@
 ^LICENSE\.md$
 ^\.github/workflows/R-CMD-check\.yaml$
 ^\.github$
+^Dockerfile$

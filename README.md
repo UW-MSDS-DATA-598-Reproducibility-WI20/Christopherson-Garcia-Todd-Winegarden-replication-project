@@ -2,6 +2,7 @@
 
 <!-- badges: start -->
 [![R build status](https://github.com/rcctodd/-Christopherson-Garcia-Todd-Winegarden-replication-project/workflows/R-CMD-check/badge.svg)](https://github.com/rcctodd/-Christopherson-Garcia-Todd-Winegarden-replication-project/actions)
+[![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/rcctodd/-Christopherson-Garcia-Todd-Winegarden-replication-project/master?urlpath=rstudio)
 <!-- badges: end -->
  
 ## Contributors
@@ -11,14 +12,14 @@
 
 ## Contents
 
-The purpose of this repo is to provide a complete workflow record of our attempt to replicate Figure 8 in the paper _Shape as a measure of weapon standardisation: From metric to geometric morphometric analysis of the Iron Age ‘Havor’ lance from Southern Scandinavia_ by Birch and Martinon-Torres. This figure shows the pair-wise correlation of all lance dimensions across the three underlying datasets next to bivariate plots and distributions of each single dimension with kernel density approximation. We attempt to verify whether these calculations and smoothed distributions look similar upon replication, and also are interested how close we can get to the correct style without any of the actual original figure code.
+The purpose of this repo is to provide a complete workflow record of our attempt to replicate Figure 8 in the paper _Shape as a measure of weapon standardisation: From metric to geometric morphometric analysis of the Iron Age â€˜Havorâ€™ lance from Southern Scandinavia_ by Birch and Martinon-Torres. This figure shows the pair-wise correlation of all lance dimensions across the three underlying datasets next to bivariate plots and distributions of each single dimension with kernel density approximation. We attempt to verify whether these calculations and smoothed distributions look similar upon replication, and also are interested how close we can get to the correct style without any of the actual original figure code.
 
 This project is an assignment for the class DATA 598 'Reproducibility for Data Science', taken as part of the UW Master of Data Science program.
 
 ## Citation of Original Study
 
 Birch, T., & Martinon-Torres, M. (2018). Shape as a measure of weapon standardisation: From 
-    metric to geometric morphometric analysis of the Iron Age ‘Havor’ lance from Southern
+    metric to geometric morphometric analysis of the Iron Age â€˜Havorâ€™ lance from Southern
     Scandinavia. Journal of Archaeological Science, 101, 34-51. doi: 
     https://doi.org/10.1016/j.jas.2018.11.002
 
