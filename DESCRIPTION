@@ -11,18 +11,18 @@ Authors@R:
     person(given = "Corey",
            family = "Christopherson",
            role = c("aut", "cre"),
-           email = "email",
-           comment = c(ORCID = "ID"))
+           email = "coreyc2@uw.edu",
+           comment = c(ORCID = "0000-0001-6470-1146"))
     person(given = "Zachary",
            family = "Garcia",
            role = c("aut", "cre"),
-           email = "email",
-           comment = c(ORCID = "ID"))
+           email = "garciz@uw.edu",
+           comment = c(ORCID = "0000-0002-6538-5592"))
     person(given = "Thomas",
            family = "Winegarden",
            role = c("aut", "cre"),
-           email = "email",
-           comment = c(ORCID = "ID"))
+           email = "t2wine@gmail.com",
+           comment = c(ORCID = "0000-0003-1912-1964"))
 Description: Replication of Shape as a Measure of Weapon Standardisation paper for 598A WI20
 License: MIT + file LICENSE
 Encoding: UTF-8
