@@ -30,7 +30,7 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 Suggests: 
     testthat
-Imports: ,
+Imports: 
     ape (>= 5.3),
     assertthat (>= 0.2.1),
     backports (>= 1.1.5),
