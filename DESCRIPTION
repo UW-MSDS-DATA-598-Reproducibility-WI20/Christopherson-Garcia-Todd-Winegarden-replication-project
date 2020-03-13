@@ -94,7 +94,6 @@ Imports:
     remotes (>= 2.1.1),
     reshape (>= 0.8.8),
     reshape2 (>= 1.4.3),
-    tidyselect (= 1.0.0),
     rlang (>= 0.4.4),
     rprojroot (>= 1.3-2),
     RRPP (>= 0.5.2),
