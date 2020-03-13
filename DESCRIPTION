@@ -1,5 +1,4 @@
-Package: 
-    Christopherson-Garcia-Todd-Winegarden-replication-project
+Package: compendium
 Title: Shape as a Measure of Weapon Standardisation: A Replication
 Version: 0.0.0.9000
 Authors@R: 
@@ -30,7 +29,7 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 Suggests: 
     testthat
-Imports: ,
+Imports: 
     ape (>= 5.3),
     assertthat (>= 0.2.1),
     backports (>= 1.1.5),
