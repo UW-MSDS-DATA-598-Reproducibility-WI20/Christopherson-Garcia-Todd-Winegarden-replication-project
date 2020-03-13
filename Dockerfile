@@ -4,7 +4,7 @@ FROM rocker/verse:3.6.2
 # required
 MAINTAINER Richard Todd <rcctodd@uw.edu>
 
-COPY . /-Christopherson-Garcia-Todd-Winegarden-replication-project
+COPY . /Christopherson-Garcia-Todd-Winegarden-replication-project
 
 # go into the repo directory
 RUN . /etc/environment \
