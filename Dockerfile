@@ -11,7 +11,7 @@ RUN . /etc/environment \
   # Install linux depedendencies here
   # e.g. need this for ggforce::geom_sina
   && sudo apt-get update \
-  && sudo apt-get install libudunits2-dev mesa-common-dev  -y \
+  && sudo apt-get install libudunits2-dev mesa-common-dev libcgal-dev libglu1-mesa-dev libglu1-mesa-dev libx11-dev -y \
   # build this compendium package
   && R -e "devtools::install('/-Christopherson-Garcia-Todd-Winegarden-replication-project', dep=TRUE)" \
   # render the manuscript into a docx, you'll need to edit this if you've
