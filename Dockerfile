@@ -4,7 +4,7 @@ FROM rocker/verse:3.6.2
 # required
 MAINTAINER Richard Todd <rcctodd@uw.edu>
 
-COPY . /Christopherson-Garcia-Todd-Winegarden-replication-project
+COPY . /compendium
 
 # go into the repo directory
 RUN . /etc/environment \
@@ -16,4 +16,4 @@ RUN . /etc/environment \
   && R -e "devtools::install('/compendium', dep=TRUE)" \
   # render the manuscript into a docx, you'll need to edit this if you've
   # customised the location and name of your main Rmd file
-  && R -e "rmarkdown::render('/analysis/paper.Rmd')"
+  && R -e "rmarkdown::render('compendium/analysis/paper.Rmd')"
