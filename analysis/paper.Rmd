@@ -34,12 +34,12 @@ The original analysis was conducted in an unspecified version of R. However, spe
 #install specific versions of packages called out in the paper
 #require(devtools)
 library(devtools)
-#install_version("geomorph", version = "3.0.6", repos = "http://cran.rstudio.com")
+install_version("geomorph", version = "3.0.6", repos = "http://cran.rstudio.com")
 #install_version("geomorph", version = "3.0.6", repos = "http://cran.r-project.org")
 #install.packages("http://https://cran.r-project.org/src/contrib/Archive/geomorph/geomorph_3.0.6.tar.gz", repos=NULL, type="source")
 library(geomorph) # geomorph 3.0.6
 
-#install_version("shapes", version = "1.2.3", repos = "http://cran.rstudio.com/") #"http://cran.rstudio.com")
+install_version("shapes", version = "1.2.3", repos = "http://cran.rstudio.com/") #"http://cran.rstudio.com")
 #install_version("shapes", version = "1.2.3", repos = "http://cran.rstudio.com/") #"http://cran.us.r-project.org")
 library(shapes) # shapes 1.2.3
 
