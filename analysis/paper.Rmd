@@ -63,8 +63,10 @@ library(GGally)
 Our next step was to set the working directory. Although a trivial step, the original code used setwd() and a static path string while our reproduction attempt opted to use the more robust here() library as shown below.
 
 ```{r set working directory, include=TRUE}
+#previous solutions used before moving to the here package commented out below
 #setwd(dirname(rstudioapi::getSourceEditorContext()$path))
 #getwd()
+
 library(here)
 ```
 
@@ -267,6 +269,7 @@ As of geomorph version 3.1, the function procD.allmoetry has been deprecated (se
 We replicate the results of p.44 on the ANOVA tests used to establish whether there is a significant relationship between centroid size and shape.
 
 ```{r replication ANOVA  test, include=TRUE, echo=FALSE}
+#
 lances_ANOVA_site<-procD.allometry(shape ~ size, ~site, print.progress = FALSE,  data=lances_geomorph,method="PredLine") 
 
 print(lances_ANOVA_site)
@@ -278,6 +281,7 @@ The results match. We note that no seed is specified in the provided code, makin
 We can explore the effect of other parameters in the allometry ANOVA, to test whether the core conclusion holds. In the example below, we do not log-transform the size variable and we set a significance threshold (alpha) of 0.1, rather than the default 0.05.
 
 ```{r explore ANOVA  test v1, include=TRUE, echo=FALSE}
+#
 lances_ANOVA_two<-procD.allometry(shape ~ size, ~site, logsz=FALSE, seed=42, alpha=0.1, print.progress = FALSE,  data=lances_geomorph, method="PredLine") 
 
 print(lances_ANOVA_two)
@@ -287,6 +291,7 @@ print(lances_ANOVA_two)
 The core result holds! We can push these boundaries further; removing residual randomization and using Cohen’s f-squared values as the random distribution to estimate effect size.
 
 ```{r explore ANOVA  test v2, include=TRUE, echo=FALSE}
+#procD.allometry geomorph anova. needs geomorph 3.0.6!
 lances_ANOVA_three <- procD.allometry(shape ~ size, ~site, logsz=FALSE, seed=42, alpha=0.1, effect.type="cohen", RRPP=FALSE,  print.progress = FALSE, data=lances_geomorph, method="PredLine") 
 
 print(lances_ANOVA_three)
