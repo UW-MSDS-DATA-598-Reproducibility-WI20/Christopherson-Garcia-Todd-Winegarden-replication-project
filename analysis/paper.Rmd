@@ -22,7 +22,7 @@ $$ CV = \frac{stdev}{mean}*100 $$
 
 However, in the paper _Shape as a measure of weapon standardization: From metric to geometric morphometric analysis of the Iron Age ‘Havor’ lance from Southern Scandinavia_ by Birch and Martinon-Torres, a new approach is proposed. Instead of relying on dimensional comparison of different CVs, they propose using a Geomorphic Morphometric (GMM) analysis as a general measure of overall shape [2].
 
-In this work, we are attempting to confirm that the underlying data provided is the same as that used in the original study by replicating the figure showing the pair-wise correlation of all lance dimensions across the three underlying datasets (original study Fig 8). We are also attempting to replicate the original finding that there was found to be an association between overall centroid size and shape that could not be explained through site difference via an ANOVA analysis.
+In this work, we are attempting to confirm that the underlying data provided [2] is the same as that used in the original study by replicating the figure showing the pair-wise correlation of all lance dimensions across the three underlying datasets (original study Fig 8). We are also attempting to replicate the original finding that there was found to be an association between overall centroid size and shape that could not be explained through site difference via an ANOVA analysis.
 
 ## Methods
 
@@ -297,7 +297,7 @@ The core result still holds.
 
 ## Conclusion
 
-Our attempt at a replication of two parts of the paper _Shape as a measure of weapon standardization: From metric to geometric morphometric analysis of the Iron Age ‘Havor’ lance from Southern Scandinavia_ by Birch and Martinon-Torres was an overall success despite some missing documentation and inconsistencies between the paper and provided code.
+Our attempt at a replication of two parts of the paper _Shape as a measure of weapon standardization: From metric to geometric morphometric analysis of the Iron Age ‘Havor’ lance from Southern Scandinavia_ by Birch and Martinon-Torres [2] was an overall success despite some missing documentation and inconsistencies between the paper and provided code.
 
 Specifically, the replication attempt of the figure showing the pair-wise correlation of all lance dimensions across the three underlying datasets (original study Fig 8) was used to confirm that the underlying data provided by the authors was the same as that used in the analysis. This replication attempt was complicated by the lack of the code used to generate the plot in the provided R file. Additionally, the correlation coefficients noted in the R file comments did not match the figure in the original paper. We were able to create a similar figure to the one in the original paper; but without a clear expected outcome, we were unable to confirm that the provided dataset was the same one used in the analysis.
 
