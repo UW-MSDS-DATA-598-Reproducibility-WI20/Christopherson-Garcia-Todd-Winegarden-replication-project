@@ -3,7 +3,7 @@
 <!-- badges: start -->
 ![Build Docker Container](https://github.com/UW-MSDS-DATA-598-Reproducibility-WI20/Christopherson-Garcia-Todd-Winegarden-replication-project/workflows/Build-Docker-Container/badge.svg)
 [![Launch Rstudio Binder](http://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/UW-MSDS-DATA-598-Reproducibility-WI20/Christopherson-Garcia-Todd-Winegarden-replication-project/master?urlpath=rstudio)
-[![DOI](https://img.shields.io/badge/OSF-DOI%3A%2010.17605%2FOSF.IO%2FXXXX-brightgreen)](https://doi.org/10.17605/OSF.IO/XXXX)
+[![DOI](https://img.shields.io/badge/OSF-DOI%3A%2010.17605%2FOSF.IO%2FPGV9D-brightgreen)](https://doi.org/10.17605/OSF.IO/PGV9D)
 <!-- badges: end -->
  
 ## Contributors
