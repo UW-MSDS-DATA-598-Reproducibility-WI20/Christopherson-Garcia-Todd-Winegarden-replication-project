@@ -26,7 +26,7 @@ In this work, we are attempting to confirm that the underlying data provided [2]
 
 ## Methods
 
-The original analysis was conducted in an unspecified version of R. However, specific versions of geomorph(v3.0.6) and shapes(v1.2.3), two of the most important packages, were directly stated. Our reproduction attempt began with importing the packages explicitly identified in the paper as well as those required in the technical code.
+The original analysis was conducted in an unspecified version of R. However, specific versions of geomorph (v3.0.6) and shapes (v1.2.3), two of the most important packages, were directly stated. Our reproduction attempt began with importing the packages explicitly identified in the paper as well as those required in the technical code.
 
 
 ```{r load packages, include=TRUE}
@@ -60,7 +60,7 @@ library(GGally)
 
 ```
 
-Our next step was to set the working directory. Although a trivial step, the original code used setwd() and a static path string while our reproduction attempt opted to use the more robust here() library as shown below.
+<!-- Our next step was to set the working directory. Although a trivial step, the original code used setwd() and a static path string while our reproduction attempt opted to use the more robust here() library as shown below. -->
 
 ```{r set working directory, include=TRUE}
 #previous solutions used before moving to the here package commented out below
@@ -70,7 +70,7 @@ Our next step was to set the working directory. Although a trivial step, the ori
 library(here)
 ```
 
-Next, we read in and shaped the data obtained from the ScienceDirect archive of the paper using the same code as the original paper, slightly modified to account for our modified approach to setting the working directory. 
+<!-- Next, we read in and shaped the data obtained from the ScienceDirect archive of the paper using the same code as the original paper, slightly modified to account for our modified approach to setting the working directory. -->
 
 
 ```{r load data, include=TRUE}
@@ -121,7 +121,7 @@ lances_geomorph<-geomorph.data.frame(shape=lancespr$coords,site=site,size=lances
 ```
 
 
-With the R session properly configured, correct packages installed, and data loaded and shaped according to the paper and provided R file, we were then able to proceed with our attempt at replicating the correlation matrix of lance dimensions shown in Figure 8 of the original paper. This is where we encountered our first issue, as the code used to create the figure was not included in the R file. Instead a series of five corr() statements (shown below) comparing a subset of lance features were included with the resulting correlation coefficients included in the comments.
+<!--With the R session properly configured, correct packages installed, and data loaded and shaped according to the paper and provided R file, we were then able to proceed with --> We focused out our replication on correlation matrix of lance dimensions shown in Figure 8 of the original paper. The R code used to create the figure was not included in the R file provided by the authors with their publication. Instead, the authors provided a series of five `corr()` statements (shown below) comparing a subset of lance features were included with the resulting correlation coefficients included in the comments.
 
 Pairwise correlations of lance features
 cor(socket$socket_length,socket$sock_bdiam,use="pairwise.complete.obs") # 0.52
@@ -136,13 +136,13 @@ Finally, we attempted to replicate the original finding that there was found to 
 
 ## Results
 
-Unfortunately, the pairwise correlation coefficients noted in the comments were not the same as the ones shown in Figure 8. This inconsistiency made it more difficult to confirm the success of our replication attempt. 
+The pairwise correlation coefficients noted in the comments in the code provided by the authors were not the same as the ones shown in their Figure 8 of their published paper. This inconsistency made it more difficult to confirm the success of our replication attempt. 
 
-Luckily, we were able to replicate the finding that there was found to be an association between overall centroid size and shape that could not be explained through site difference via an ANOVA analysis on page 44 of the original paper
+We were able to replicate the finding that there was found to be an association between overall centroid size and shape that could not be explained through site difference via an ANOVA analysis on page 44 of the original paper
 
 ### Reproducing Figure 8 and associated analysis
 
-The figure that we are attepting to replicate is Figure 8, captioned as a  "Correlation matrix of Havor lance dimensions showing Pearson's r(lowerpanel), accompanying bivariate plots (upperpanel) and  distributions (histograms with kernel density estimation, on the diagonal). Red=Ejsbøl, green=Nydam, blue=Illerup."
+The figure that we are attempting to replicate is Figure 8, captioned as a  "Correlation matrix of Havor lance dimensions showing Pearson's r(lowerpanel), accompanying bivariate plots (upperpanel) and  distributions (histograms with kernel density estimation, on the diagonal). Red=Ejsbøl, green=Nydam, blue=Illerup."
 
 Data appear to be drawn from the main lances_M dataframe, but the figure labels include "socket (max)" and "socket (min)" which do not have obvious analogues in the column names.
 
@@ -213,7 +213,7 @@ print(pairs_fig, progress = F)
 
 ```
 
-The correlation values do not exactly match that of the paper. A quick test with the stats passage verifies the results of our plot and confirms that the issue is not a mis-labelling of a spearman coefficient.
+The correlation values do not exactly match that of the paper. A test with the stats package verifies the results of our plot and confirms that the issue is not a mis-labelling of a Spearman coefficient.
 
 ```{r replication corr test, include=TRUE, echo=FALSE}
 cor(lances_M$socket_length,lances_M$sock_bdiam, use= "pairwise.complete.obs", method = "pearson")
@@ -222,6 +222,7 @@ cor(lances_M$socket_length,lances_M$sock_bdiam, use= "pairwise.complete.obs", me
 cor(lances_M$sock_sdiam,lances_M$width, use= "pairwise.complete.obs", method = "pearson")
 cor(lances_M$sock_sdiam,lances_M$width, use= "pairwise.complete.obs", method = "spearman")
 ```
+
 Below we recreate the figure on different data subsets:
 
 ```{r replication-corr-test-2, include=TRUE, echo=FALSE, fig.cap="My figure"}
@@ -272,7 +273,7 @@ None of the author-defined data subsets (or a manual calculation based on on com
 
 ### Reproducing ANOVA analysis
 
-As of geomorph version 3.1, the function procD.allmoetry has been deprecated (see https://rdrr.io/cran/geomorph/man/procD.allometry.html). This function underpinned the ANOVA tests provided in the technical code appendix. Thankfully, the specificity of the authors' instructions allowed a previous version of geomorph to be installed!
+As of geomorph version 3.1, the function procD.allmoetry has been deprecated (see https://rdrr.io/cran/geomorph/man/procD.allometry.html). This function underpinned the ANOVA tests provided in the technical code appendix. The specificity of the authors' instructions allowed a previous version of geomorph to be installed for this replication. 
 
 We replicate the results of p.44 on the ANOVA tests used to establish whether there is a significant relationship between centroid size and shape.
 
@@ -281,7 +282,6 @@ We replicate the results of p.44 on the ANOVA tests used to establish whether th
 lances_ANOVA_site<-procD.allometry(shape ~ size, ~site, print.progress = FALSE,  data=lances_geomorph,method="PredLine") 
 
 print(lances_ANOVA_site)
-
 ```
 
 The results match. We note that no seed is specified in the provided code, making the random resampling approach used volatile.
