@@ -75,11 +75,11 @@ Next, we read in and shaped the data obtained from the ScienceDirect archive of 
 
 ```{r load data, include=TRUE}
 # Read the appendix datafile containing a matrix of dimensional data (metric) as "lances_M" 
-lances_M<-read.csv(here("Data","1-s2.0-S0305440318306757-mmc2.csv"),header=TRUE)
+lances_M<-read.csv(here("analysis/Data","1-s2.0-S0305440318306757-mmc2.csv"),header=TRUE)
 
 # Read the datafile "lances_GMM" containing a matrix of landmark data (geometric morphometric)
 #lances_GMM<-read.csv("Data/1-s2.0-S0305440318306757-mmc3.csv",header=TRUE)
-lances_GMM<-read.csv(here("Data","1-s2.0-S0305440318306757-mmc3.csv"),header=TRUE)
+lances_GMM<-read.csv(here("analysis/Data","1-s2.0-S0305440318306757-mmc3.csv"),header=TRUE)
 
 # Convert the 2D matrix of geometric morphometric data ("lances_GMM") into a 3D array
 lances_geo<-arrayspecs(lances_GMM[,2:15],7,2) # 7 landmarks, recording 2 dimensions only (xy coordinates), ignoring the first column of lance IDs

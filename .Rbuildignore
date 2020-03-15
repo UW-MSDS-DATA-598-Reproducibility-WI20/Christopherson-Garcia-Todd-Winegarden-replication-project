@@ -4,3 +4,7 @@
 ^\.github/workflows/R-CMD-check\.yaml$
 ^\.github$
 ^Dockerfile$
+^CODE_OF_CONDUCT\.md$
+^\.binder$
+^CONTRIBUTING\.md$
+^analysis$

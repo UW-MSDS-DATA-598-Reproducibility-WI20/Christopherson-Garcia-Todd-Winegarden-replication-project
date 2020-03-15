@@ -1,5 +1,7 @@
 on: [push, pull_request]
 
+name: Build-Docker-Container
+
 jobs:
   build:
     runs-on: ubuntu-latest

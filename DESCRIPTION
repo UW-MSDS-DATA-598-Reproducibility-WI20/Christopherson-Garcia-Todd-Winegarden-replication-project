@@ -22,7 +22,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "t2wine@gmail.com",
            comment = c(ORCID = "0000-0003-1912-1964"))
-Description: Replication of Shape as a Measure of Weapon Standardisation paper for 598A WI20
+Description: Replication of Shape as a Measure of Weapon Standardisation paper for DATA 598A WI20.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
