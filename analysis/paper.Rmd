@@ -2,7 +2,7 @@
 title: "Replication in Archaeological Science: Shape as a Measure of Weapon Standardisation"
 author: "Corey Christopherson, Zachary Garcia, Richard Todd, Thomas Winegarden"
 date: "2/24/2020"
-output: word_document
+output: bookdown::word_document2
 ---
 
 ```{r setup, include=FALSE}
@@ -20,7 +20,7 @@ The traditional approach to evaluating the level of manufacturing standardizatio
 
 $$ CV = \frac{stdev}{mean}*100 $$
 
-However, in the paper _Shape as a measure of weapon standardization: From metric to geometric morphometric analysis of the Iron Age ‘Havor’ lance from Southern Scandinavia_ by Birch and Martinon-Torres, a new approach is proposed. Instead of relying on dimensional comparison of different CVs, they propose using a Geomorphic Morphometric (GMM) analysis as a general measure of overall shape [2].
+However, in the paper _Shape as a measure of weapon standardization: From metric to geometric morphometric analysis of the Iron Age ‘Havor’ lance from Southern Scandinavia_ by Birch and Martinon-Torres [-@citationkey], a new approach is proposed. Instead of relying on dimensional comparison of different CVs, they propose using a Geomorphic Morphometric (GMM) analysis as a general measure of overall shape [2].
 
 In this work, we are attempting to confirm that the underlying data provided [2] is the same as that used in the original study by replicating the figure showing the pair-wise correlation of all lance dimensions across the three underlying datasets (original study Fig 8). We are also attempting to replicate the original finding that there was found to be an association between overall centroid size and shape that could not be explained through site difference via an ANOVA analysis.
 
@@ -224,7 +224,7 @@ cor(lances_M$sock_sdiam,lances_M$width, use= "pairwise.complete.obs", method = "
 ```
 Below we recreate the figure on different data subsets:
 
-```{r replication corr test 2, include=TRUE, echo=FALSE}
+```{r replication-corr-test-2, include=TRUE, echo=FALSE, fig.cap="My figure"}
 #COMMENTED OUT BY THOMAS IN ORDER TO KNIT
 
 pairs_fig <- ggpairs(lances_M[complete.cases(lances_M),], columns = c("total_length", "blade_length", "socket_length", "sock_bdiam", "sock_sdiam", "width", "thickness"), 
@@ -259,6 +259,14 @@ pairs_fig <- ggpairs(total, columns = c("total_length", "blade_length", "socket_
 print(pairs_fig, progress = F) 
 
 ```
+
+- [ ] In Figure \@ref(fig:replication-corr-test-2) we can see... each plot to have it's own caption and don't forget cross-reference in the text. 
+
+- [ ] Try the broom pkg to get tidy output from the ANOVAs so we can print pretty tables.
+
+- [ ] citations and reference list
+
+
 
 None of the author-defined data subsets (or a manual calculation based on on complete cases) allows us to replicate the correlation results.
 
